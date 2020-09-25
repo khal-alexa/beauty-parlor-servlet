@@ -1,0 +1,10 @@
+.idea/
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+*.sqlite
+out
+
+target/
