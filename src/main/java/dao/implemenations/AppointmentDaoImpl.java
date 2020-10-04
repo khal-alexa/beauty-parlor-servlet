@@ -37,7 +37,7 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
                 .setDate(resultSet.getDate("date").toLocalDate())
                 .setClientId(resultSet.getLong("client_id"))
                 .setSpecialistId(resultSet.getLong("specialist_id"))
-                .setServiceId(resultSet.getLong("service_id"))
+                .setTreatmentId(resultSet.getLong("service_id"))
                 .setPaid(resultSet.getBoolean("is_paid"))
                 .setDone(resultSet.getBoolean("is_done"))
                 .build();
@@ -64,7 +64,7 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
         preparedStatement.setDate(2, Date.valueOf(entity.getDate()));
         preparedStatement.setLong(3, entity.getClientId());
         preparedStatement.setLong(4, entity.getSpecialistId());
-        preparedStatement.setLong(5, entity.getServiceId());
+        preparedStatement.setLong(5, entity.getTreatmentId());
         preparedStatement.setBoolean(6, entity.isPaid());
         preparedStatement.setBoolean(7, entity.isDone());
     }

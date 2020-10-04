@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS users
 (
     id           BIGINT AUTO_INCREMENT NOT NULL,
     user_name    VARCHAR(30)           NOT NULL,
+    first_name   VARCHAR(30)           NOT NULL,
+    Last_name    VARCHAR(30)           NOT NULL,
     password     VARCHAR(30)           NOT NULL,
     email        VARCHAR(255)          NOT NULL,
     phone_number VARCHAR(20)           NOT NULL,
@@ -18,37 +20,20 @@ CREATE TABLE IF NOT EXISTS timeslots
     CONSTRAINT PK_timeslots PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS appointments
-(
-    id            BIGINT AUTO_INCREMENT NOT NULL,
-    timeslot_id   BIGINT                NOT NULL,
-    date          DATE                  NOT NULL,
-    client_id     BIGINT                NOT NULL,
-    specialist_id BIGINT                NOT NULL,
-    service_id    BIGINT                NOT NULL,
-    is_paid       BOOLEAN               NOT NULL,
-    is_done       BOOLEAN               NOT NULL,
-    CONSTRAINT PK_appointments PRIMARY KEY (id),
-    CONSTRAINT FK_appointments_timeslots FOREIGN KEY (timeslot_id) REFERENCES timeslots (id) ON DELETE CASCADE,
-    CONSTRAINT FK_appointments_users_client FOREIGN KEY (client_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT FK_appointments_users_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT FK_appointments_services FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS feedbacks
 (
     id            BIGINT AUTO_INCREMENT NOT NULL,
     rate          BIGINT                NOT NULL,
-    text          VARCHAR(255)          NOT NULL,
+    text          VARCHAR(2000)         NOT NULL,
     client_id     BIGINT                NOT NULL,
     specialist_id BIGINT                NOT NULL,
-    date_time     DATETIME              NOT NULL,
+    created_on    DATETIME              NOT NULL,
     CONSTRAINT PK_feedbacks PRIMARY KEY (id),
     CONSTRAINT FK_appointments_feedbacks_client FOREIGN KEY (client_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT FK_appointments_feedbacks_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS services
+CREATE TABLE IF NOT EXISTS treatments
 (
     id          BIGINT AUTO_INCREMENT NOT NULL,
     name        VARCHAR(30)           NOT NULL,
@@ -57,11 +42,28 @@ CREATE TABLE IF NOT EXISTS services
     CONSTRAINT PK_services PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS specialists_services
+CREATE TABLE IF NOT EXISTS specialists_treatments
 (
     specialist_id BIGINT NOT NULL,
-    service_id    BIGINT NOT NULL,
-    CONSTRAINT PK_specialists_services PRIMARY KEY (specialist_id, service_id),
+    treatment_id  BIGINT NOT NULL,
+    CONSTRAINT PK_specialists_services PRIMARY KEY (specialist_id, treatment_id),
     CONSTRAINT FK_specialists_services_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT FK_specialists_services_service FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE CASCADE
+    CONSTRAINT FK_specialists_services_service FOREIGN KEY (treatment_id) REFERENCES services (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS appointments
+(
+    id            BIGINT AUTO_INCREMENT NOT NULL,
+    timeslot_id   BIGINT                NOT NULL,
+    date          DATE                  NOT NULL,
+    client_id     BIGINT                NOT NULL,
+    specialist_id BIGINT                NOT NULL,
+    treatment_id  BIGINT                NOT NULL,
+    is_paid       BOOLEAN               NOT NULL,
+    is_done       BOOLEAN               NOT NULL,
+    CONSTRAINT PK_appointments PRIMARY KEY (id),
+    CONSTRAINT FK_appointments_timeslots FOREIGN KEY (timeslot_id) REFERENCES timeslots (id) ON DELETE CASCADE,
+    CONSTRAINT FK_appointments_users_client FOREIGN KEY (client_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT FK_appointments_users_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT FK_appointments_services FOREIGN KEY (treatment_id) REFERENCES services (id) ON DELETE CASCADE
 );
