@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DBConnector {
-    private static final String DB_CONFIG_FILENAME = "db.properties";
+    private static final String DB_CONFIG_FILENAME = "db";
     private static final HikariDataSource hikariPool = new HikariDataSource();
 
     public DBConnector() {

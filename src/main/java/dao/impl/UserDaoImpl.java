@@ -16,7 +16,8 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
     private static final String SAVE_QUERY =
-            "INSERT INTO users (user_name, password, email, phone_number, role) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO users (username, password, first_name, last_name, email, phone_number, role) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users LIMIT ? OFFSET ?";
     private static final String UPDATE_QUERY =
             "UPDATE users SET user_name = ?, password = ?, email = ?, phone_number = ?, role = ? where id = ?";
@@ -28,11 +29,14 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 
     @Override
     protected void insert(PreparedStatement preparedStatement, User entity) throws SQLException {
-        preparedStatement.setString(1, entity.getUserName());
+        preparedStatement.setString(1, entity.getUsername());
         preparedStatement.setString(2, entity.getPassword());
-        preparedStatement.setString(3, entity.getEmail());
-        preparedStatement.setString(4, entity.getPhoneNumber());
-        preparedStatement.setString(5, entity.getRole().toString());
+        preparedStatement.setString(3, entity.getFirstName());
+        preparedStatement.setString(4, entity.getLastName());
+        preparedStatement.setString(5, entity.getEmail());
+        preparedStatement.setString(6, entity.getPhoneNumber());
+        preparedStatement.setString(7, entity.getRole().toString());
+
     }
 
     @Override

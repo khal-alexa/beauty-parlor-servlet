@@ -1,37 +1,33 @@
 package entities;
 
-import java.time.LocalDate;
-
 public class User {
     private final Long id;
-    private final String userName;
+    private final String username;
     private final String password;
     private final String firstName;
     private final String lastName;
     private final String email;
     private final String phoneNumber;
     private final Role role;
-    private final LocalDate createdOn;
 
-    public User(Long id, String userName, String password, String firstName, String lastName,
-                String email, String phoneNumber, Role role, LocalDate createdOn) {
+    public User(Long id, String username, String password, String firstName, String lastName,
+                String email, String phoneNumber, Role role) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
-        this.createdOn = createdOn;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -50,6 +46,14 @@ public class User {
         return role;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public static class UserBuilder {
         private Long id;
         private String userName;
@@ -59,7 +63,6 @@ public class User {
         private String email;
         private String phoneNumber;
         private Role role;
-        private LocalDate createdOn;
 
         public UserBuilder setId(Long id) {
             this.id = id;
@@ -101,13 +104,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder setCreatedOn(LocalDate createdOn) {
-            this.createdOn = createdOn;
-            return this;
-        }
-
         public User build() {
-            return new User(id, userName, password, firstName, lastName, email, phoneNumber, role, createdOn);
+            return new User(id, userName, password, firstName, lastName, email, phoneNumber, role);
         }
 
     }
@@ -116,14 +114,13 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", role=" + role +
-                ", createdOn=" + createdOn +
                 '}';
     }
 

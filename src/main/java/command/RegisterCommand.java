@@ -4,11 +4,12 @@ import entities.Role;
 import entities.User;
 import service.UserService;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
+import java.io.IOException;
 
-public class RegisterCommand implements Command {
+public class RegisterCommand extends AbstractCommand {
     private final UserService userService;
 
     public RegisterCommand(UserService userService) {
@@ -16,20 +17,33 @@ public class RegisterCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect("register.jsp");
+    }
+
+    @Override
+    void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!validatePasswords(request)) {
+            response.sendRedirect("register.jsp");
+        }
+        User user = buildUserFromRequest(request);
+
+        if (userService.register(user)) {
+            response.sendRedirect("login.jsp");
+        } else {
+            response.sendRedirect("register.jsp");
+        }
+    }
+
+    private User buildUserFromRequest(HttpServletRequest request) {
         String username = request.getParameter("username");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
-        String confirmedPassword = request.getParameter("confirmedPassword");
 
-        if (!password.equals(confirmedPassword)) {
-            return "registrationForm";
-        }
-
-        User user = new User.UserBuilder()
+        return new User.UserBuilder()
                 .setUserName(username)
                 .setPassword(password)
                 .setFirstName(firstName)
@@ -37,13 +51,13 @@ public class RegisterCommand implements Command {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setRole(Role.CLIENT)
-                .setCreatedOn(LocalDate.now())
                 .build();
+    }
 
-        if (userService.register(user)) {
-            return "login.jsp";
-        }
-        return "register.jsp";
+    private boolean validatePasswords(HttpServletRequest request) {
+        String password = request.getParameter("password");
+        String confirmedPassword = request.getParameter("confirmedPassword");
+        return password.equals(confirmedPassword);
     }
 
 }

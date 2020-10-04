@@ -29,14 +29,13 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Command command = commandProvider.getCommand(request.getRequestURI());
-        String page = command.execute(request, response);
 
-        if (page.contains("redirect:")) {
-            response.sendRedirect(request.getContextPath() +page.replace("redirect:",""));
+        if (command == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        command.execute(request, response);
 
-        request.getRequestDispatcher(page).forward(request, response);
     }
 
 }
