@@ -1,9 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Welcome</title>
   </head>
   <body>
-  $END$
+  <h1>Welcome to beauty parlor</h1>
+  <form action="/login" method="get">
+    <a href="/login"><span>Login</span></a>
+  </form>
   </body>
 </html>

@@ -2,13 +2,13 @@ package entities;
 
 import java.math.BigDecimal;
 
-public class Service {
+public class Treatment {
     private Long id;
     private String name;
     private String description;
     private BigDecimal price;
 
-    public Service(Long id, String name, String description, BigDecimal price) {
+    public Treatment(Long id, String name, String description, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,14 +57,14 @@ public class Service {
             return this;
         }
 
-        public Service build() {
-            return new Service(id, name, description, price);
+        public Treatment build() {
+            return new Treatment(id, name, description, price);
         }
     }
 
     @Override
     public String toString() {
-        return "Service{" +
+        return "Treatment{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

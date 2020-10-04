@@ -58,7 +58,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     }
 
     @Override
-    public boolean deleteUserById(Integer userId) {
+    public boolean deleteUserById(Long userId) {
         try (final PreparedStatement preparedStatement = connectionPool.getConnection().prepareStatement(DELETE_BY_ID_QUERY)) {
             preparedStatement.setObject(1, userId);
             preparedStatement.execute();

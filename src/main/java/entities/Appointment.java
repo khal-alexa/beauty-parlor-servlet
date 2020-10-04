@@ -8,18 +8,18 @@ public class Appointment {
     private final LocalDate date;
     private final Long clientId;
     private final Long specialistId;
-    private final Long serviceId;
+    private final Long treatmentId;
     private final boolean isPaid;
     private final boolean isDone;
 
     public Appointment(Long id, Long timeslotId, LocalDate date, Long clientId,
-                       Long specialistId, Long serviceId, boolean isPaid, boolean isDone) {
+                       Long specialistId, Long treatmentId, boolean isPaid, boolean isDone) {
         this.id = id;
         this.timeslotId = timeslotId;
         this.date = date;
         this.clientId = clientId;
         this.specialistId = specialistId;
-        this.serviceId = serviceId;
+        this.treatmentId = treatmentId;
         this.isPaid = isPaid;
         this.isDone = isDone;
     }
@@ -44,8 +44,8 @@ public class Appointment {
         return specialistId;
     }
 
-    public Long getServiceId() {
-        return serviceId;
+    public Long getTreatmentId() {
+        return treatmentId;
     }
 
     public boolean isPaid() {
@@ -62,7 +62,7 @@ public class Appointment {
         private LocalDate date;
         private Long clientId;
         private Long specialistId;
-        private Long serviceId;
+        private Long treatmentId;
         private boolean isPaid;
         private boolean isDone;
 
@@ -91,8 +91,8 @@ public class Appointment {
             return this;
         }
 
-        public AppointmentBuilder setServiceId(Long serviceId) {
-            this.serviceId = serviceId;
+        public AppointmentBuilder setTreatmentId(Long serviceId) {
+            this.treatmentId = serviceId;
             return this;
         }
 
@@ -108,7 +108,7 @@ public class Appointment {
 
         public Appointment build() {
             return new Appointment(id, timeslotId, date, clientId, specialistId,
-                    serviceId, isPaid, isDone);
+                    treatmentId, isPaid, isDone);
         }
     }
 
@@ -120,7 +120,7 @@ public class Appointment {
                 ", date=" + date +
                 ", clientId=" + clientId +
                 ", specialistId=" + specialistId +
-                ", serviceId=" + serviceId +
+                ", treatmentId=" + treatmentId +
                 ", isPaid=" + isPaid +
                 ", isDone=" + isDone +
                 '}';

@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface UserDao extends CrudDao<User> {
     Optional<User> findByEmail(String email);
 
-    boolean deleteUserById(Integer userId);
+    boolean deleteUserById(Long userId);
 }
