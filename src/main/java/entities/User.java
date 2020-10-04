@@ -2,16 +2,21 @@ package entities;
 
 public class User {
     private final Long id;
-    private final String userName;
+    private final String username;
     private final String password;
+    private final String firstName;
+    private final String lastName;
     private final String email;
     private final String phoneNumber;
     private final Role role;
 
-    public User(Long id, String userName, String password, String email, String phoneNumber, Role role) {
+    public User(Long id, String username, String password, String firstName, String lastName,
+                String email, String phoneNumber, Role role) {
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
@@ -21,8 +26,8 @@ public class User {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -41,10 +46,20 @@ public class User {
         return role;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
     public static class UserBuilder {
         private Long id;
         private String userName;
         private String password;
+        private String firstName;
+        private String lastName;
         private String email;
         private String phoneNumber;
         private Role role;
@@ -79,23 +94,34 @@ public class User {
             return this;
         }
 
-        public User build() {
-            return new User(id, userName, password, email, phoneNumber, role);
+        public UserBuilder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
         }
+
+        public UserBuilder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public User build() {
+            return new User(id, userName, password, firstName, lastName, email, phoneNumber, role);
+        }
+
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", role=" + role +
                 '}';
     }
-
-
 
 }

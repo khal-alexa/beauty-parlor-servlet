@@ -8,5 +8,8 @@
   <form action="/login" method="get">
     <a href="/login"><span>Login</span></a>
   </form>
+  <form action="/register" method="get">
+    <a href="/register"><span>Register</span></a>
+  </form>
   </body>
 </html>

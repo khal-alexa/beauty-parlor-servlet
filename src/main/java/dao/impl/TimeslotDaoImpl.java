@@ -1,6 +1,7 @@
-package dao.implemenations;
+package dao.impl;
 
 import dao.AbstractCrudDao;
+import dao.DBConnector;
 import entities.Timeslot;
 
 import java.sql.PreparedStatement;
@@ -16,8 +17,8 @@ public class TimeslotDaoImpl extends AbstractCrudDao<Timeslot> {
             "UPDATE timeslots SET start_time = ? where id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM timeslots WHERE id = ?";
 
-    public TimeslotDaoImpl() {
-        super(FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public TimeslotDaoImpl(DBConnector dbConnector) {
+        super(dbConnector, FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override

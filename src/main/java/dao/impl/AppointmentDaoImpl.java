@@ -1,7 +1,8 @@
-package dao.implemenations;
+package dao.impl;
 
 import dao.AbstractCrudDao;
 import dao.AppointmentDao;
+import dao.DBConnector;
 import dao.Page;
 import dao.exception.SqlQueryExecutionException;
 import entities.Appointment;
@@ -25,8 +26,8 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
     private static final String UPDATE_QUERY = "UPDATE appointments SET timeslot_id = ?, date = ?, client_id = ?, specialist_id, service_id = ?, is_paid = ?, is_done = ? WHERE id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM appointments WHERE id = ?";
 
-    public AppointmentDaoImpl() {
-        super(FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public AppointmentDaoImpl(DBConnector dbConnector) {
+        super(dbConnector, FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
     private List<Appointment> findAllByParam(Object param, Page page, String query) {
         int limit = page.getItemsPerPage();
         int offset = (page.getPageNumber() - 1) * limit;
-        try (final PreparedStatement preparedStatement = connectionPool.getConnection().prepareStatement(query)) {
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, param);
             preparedStatement.setObject(2, limit);
             preparedStatement.setObject(3, offset);

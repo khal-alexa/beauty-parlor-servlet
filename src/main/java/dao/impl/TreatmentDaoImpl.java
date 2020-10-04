@@ -1,6 +1,7 @@
-package dao.implemenations;
+package dao.impl;
 
 import dao.AbstractCrudDao;
+import dao.DBConnector;
 import dao.TreatmentDao;
 import entities.Treatment;
 
@@ -17,8 +18,8 @@ public class TreatmentDaoImpl extends AbstractCrudDao<Treatment> implements Trea
     private static final String UPDATE_QUERY = "UPDATE services SET name = ?, description = ?, price = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM services WHERE id = ?";
 
-    public TreatmentDaoImpl() {
-        super(FIND_BY_ID_QUERY, INSERT_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_QUERY);
+    public TreatmentDaoImpl(DBConnector dbConnector) {
+        super(dbConnector, FIND_BY_ID_QUERY, INSERT_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_QUERY);
     }
 
     @Override
