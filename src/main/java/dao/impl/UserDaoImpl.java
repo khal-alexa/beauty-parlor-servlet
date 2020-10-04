@@ -1,6 +1,7 @@
-package dao.implemenations;
+package dao.impl;
 
 import dao.AbstractCrudDao;
+import dao.DBConnector;
 import dao.UserDao;
 import dao.exception.SqlQueryExecutionException;
 import entities.Role;
@@ -21,8 +22,8 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
             "UPDATE users SET user_name = ?, password = ?, email = ?, phone_number = ?, role = ? where id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id = ?";
 
-    public UserDaoImpl() {
-        super(FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
+    public UserDaoImpl(DBConnector dbConnector) {
+        super(dbConnector, FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_BY_ID_QUERY);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 
     @Override
     public boolean deleteUserById(Long userId) {
-        try (final PreparedStatement preparedStatement = connectionPool.getConnection().prepareStatement(DELETE_BY_ID_QUERY)) {
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(DELETE_BY_ID_QUERY)) {
             preparedStatement.setObject(1, userId);
             preparedStatement.execute();
             return true;

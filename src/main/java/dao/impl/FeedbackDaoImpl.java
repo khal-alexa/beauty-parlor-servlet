@@ -1,6 +1,7 @@
-package dao.implemenations;
+package dao.impl;
 
 import dao.AbstractCrudDao;
+import dao.DBConnector;
 import dao.FeedbackDao;
 import dao.Page;
 import dao.exception.SqlQueryExecutionException;
@@ -23,8 +24,8 @@ public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements Feedba
     private static final String UPDATE_QUERY = "UPDATE feedbacks SET rate=?, text = ?, client_id = ?, specialist_id = ?, dateTime = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM feedbacks WHERE id = ?";
 
-    public FeedbackDaoImpl() {
-        super(FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_QUERY);
+    public FeedbackDaoImpl(DBConnector dbConnector) {
+        super(dbConnector, FIND_BY_ID_QUERY, SAVE_QUERY, FIND_ALL_QUERY, UPDATE_QUERY, DELETE_QUERY);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements Feedba
     private List<Feedback> findAllByParam(Object param, Page page, String query) {
         int limit = page.getItemsPerPage();
         int offset = (page.getPageNumber() - 1) * limit;
-        try (final PreparedStatement preparedStatement = connectionPool.getConnection().prepareStatement(query)) {
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(query)) {
             preparedStatement.setObject(1, param);
             preparedStatement.setObject(2, limit);
             preparedStatement.setObject(3, offset);

@@ -1,3 +1,4 @@
+USE beauty;
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGINT AUTO_INCREMENT NOT NULL,

@@ -1,20 +1,29 @@
 package entities;
 
+import java.time.LocalDate;
+
 public class User {
     private final Long id;
     private final String userName;
     private final String password;
+    private final String firstName;
+    private final String lastName;
     private final String email;
     private final String phoneNumber;
     private final Role role;
+    private final LocalDate createdOn;
 
-    public User(Long id, String userName, String password, String email, String phoneNumber, Role role) {
+    public User(Long id, String userName, String password, String firstName, String lastName,
+                String email, String phoneNumber, Role role, LocalDate createdOn) {
         this.id = id;
         this.userName = userName;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.createdOn = createdOn;
     }
 
     public Long getId() {
@@ -45,9 +54,12 @@ public class User {
         private Long id;
         private String userName;
         private String password;
+        private String firstName;
+        private String lastName;
         private String email;
         private String phoneNumber;
         private Role role;
+        private LocalDate createdOn;
 
         public UserBuilder setId(Long id) {
             this.id = id;
@@ -79,9 +91,25 @@ public class User {
             return this;
         }
 
-        public User build() {
-            return new User(id, userName, password, email, phoneNumber, role);
+        public UserBuilder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
         }
+
+        public UserBuilder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public UserBuilder setCreatedOn(LocalDate createdOn) {
+            this.createdOn = createdOn;
+            return this;
+        }
+
+        public User build() {
+            return new User(id, userName, password, firstName, lastName, email, phoneNumber, role, createdOn);
+        }
+
     }
 
     @Override
@@ -90,12 +118,13 @@ public class User {
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", role=" + role +
+                ", createdOn=" + createdOn +
                 '}';
     }
-
-
 
 }
