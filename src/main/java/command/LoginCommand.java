@@ -1,7 +1,7 @@
 package command;
 
-import entities.Role;
-import entities.User;
+import entity.Role;
+import entity.User;
 import service.UserService;
 
 import javax.servlet.ServletException;

@@ -1,7 +1,9 @@
 package service.impl;
 
 import dao.UserDao;
-import entities.User;
+import dto.UserDto;
+import entity.User;
+import mapper.Mapper;
 import service.UserService;
 import service.validator.UserValidator;
 
@@ -10,18 +12,20 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final UserValidator userValidator;
+    private final Mapper<User, UserDto> userMapper;
 
-    public UserServiceImpl(UserDao userDao, UserValidator userValidator) {
+    public UserServiceImpl(UserDao userDao, UserValidator userValidator, Mapper<User, UserDto> userMapper) {
         this.userDao = userDao;
         this.userValidator = userValidator;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public boolean register(User user) {
-        if (!userValidator.isValid(user) || isEmailNotUnique(user.getEmail())) {
+    public boolean register(UserDto userDto) {
+        if (!userValidator.isValid(userDto) || isEmailNotUnique(userDto.getEmail())) {
             return false;
         }
-        return userDao.save(user);
+        return userDao.save(userMapper.mapDtoIntoEntity(userDto));
     }
 
     @Override

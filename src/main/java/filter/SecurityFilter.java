@@ -1,6 +1,6 @@
 package filter;
 
-import entities.Role;
+import entity.Role;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

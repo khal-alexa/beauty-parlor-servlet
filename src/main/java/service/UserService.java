@@ -1,9 +1,10 @@
 package service;
 
-import entities.User;
+import dto.UserDto;
+import entity.User;
 
 public interface UserService {
-    boolean register(User user);
+    boolean register(UserDto userDto);
 
     User login(String username, String password);
 }

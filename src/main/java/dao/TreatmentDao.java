@@ -1,6 +1,6 @@
 package dao;
 
-import entities.Treatment;
+import entity.Treatment;
 
 import java.util.Optional;
 

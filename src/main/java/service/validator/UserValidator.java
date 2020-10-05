@@ -1,21 +1,21 @@
 package service.validator;
 
-import entities.User;
+import dto.UserDto;
 
 import java.util.regex.Pattern;
 
-public class UserValidator implements Validator<User> {
+public class UserValidator implements Validator<UserDto> {
     private static final String USERNAME_REGEX = "^[a-zA-Z][a-zA-Z0-9-_\\.]{3,19}$";
     private static final String EMAIL_REGEX = "^\\w+\\.?\\w+@\\w+\\.[a-z]{2,4}$";
     private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$";
     private static final String PHONE_NUMBER_REGEX = "^(\\s*)?(\\+)?([- _():=+]?\\d[- _():=+]?){10,14}(\\s*)?$";
 
     @Override
-    public boolean isValid(User user) {
-        return validateUsername(user.getUsername()) &&
-                validatePassword(user.getPassword()) &&
-                validateEmail(user.getEmail()) &&
-                validatePhoneNumber(user.getPhoneNumber());
+    public boolean isValid(UserDto userDto) {
+        return validateUsername(userDto.getUsername()) &&
+                validatePassword(userDto.getPassword()) &&
+                validateEmail(userDto.getEmail()) &&
+                validatePhoneNumber(userDto.getPhoneNumber());
     }
 
     private boolean validatePhoneNumber(String phoneNumber) {
