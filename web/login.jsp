@@ -1,20 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages"/>
+
+<html lang="${sessionScope.lang}">
 <head>
     <title>Login Form</title>
 </head>
 <body>
-<h2>Login form</h2>
+<h2><fmt:message key="login.form"/></h2>
 <form action="/login" method="post">
     <div class="container">
-        <label><b><span text="Login"></span></b></label>
-        <input type="text" placeholder="Enter username" name="username" required>
+        <label><b><fmt:message key="user.login" /></b></label>
+        <input type="text" placeholder="<fmt:message key="message.username" />" name="username" required>
         <br>
 
-        <label><b><span text="Password"></span> </b></label>
-        <input type="password" placeholder="Enter password" name="password" required>
+        <label><b><fmt:message key="user.password" /></b></label>
+        <input type="password" placeholder="<fmt:message key="message.password" />" name="password" required>
         <br>
-        <button type="submit"><span text="Login"></span>Login</button>
+        <button type="submit"><fmt:message key="button.login" /></button>
     </div>
 </form>
 </body>
