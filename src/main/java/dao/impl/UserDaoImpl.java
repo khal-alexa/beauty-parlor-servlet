@@ -4,8 +4,8 @@ import dao.AbstractCrudDao;
 import dao.DBConnector;
 import dao.UserDao;
 import dao.exception.SqlQueryExecutionException;
-import entities.Role;
-import entities.User;
+import entity.Role;
+import entity.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

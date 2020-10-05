@@ -1,7 +1,7 @@
 package command;
 
-import entities.Role;
-import entities.User;
+import dto.UserDto;
+import entity.Role;
 import service.UserService;
 
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ public class RegisterCommand extends AbstractCommand {
         if (!validatePasswords(request)) {
             response.sendRedirect("register.jsp");
         }
-        User user = buildUserFromRequest(request);
+        UserDto user = buildUserFromRequest(request);
 
         if (userService.register(user)) {
             response.sendRedirect("login.jsp");
@@ -35,7 +35,7 @@ public class RegisterCommand extends AbstractCommand {
         }
     }
 
-    private User buildUserFromRequest(HttpServletRequest request) {
+    private UserDto buildUserFromRequest(HttpServletRequest request) {
         String username = request.getParameter("username");
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -43,7 +43,7 @@ public class RegisterCommand extends AbstractCommand {
         String phoneNumber = request.getParameter("phoneNumber");
         String password = request.getParameter("password");
 
-        return new User.UserBuilder()
+        return new UserDto.UserDtoBuilder()
                 .setUserName(username)
                 .setPassword(password)
                 .setFirstName(firstName)

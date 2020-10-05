@@ -1,6 +1,6 @@
 package dao;
 
-import entities.Appointment;
+import entity.Appointment;
 
 import java.util.List;
 

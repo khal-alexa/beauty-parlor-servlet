@@ -5,7 +5,7 @@ import dao.DBConnector;
 import dao.FeedbackDao;
 import dao.Page;
 import dao.exception.SqlQueryExecutionException;
-import entities.Feedback;
+import entity.Feedback;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

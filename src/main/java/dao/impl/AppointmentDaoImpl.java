@@ -5,7 +5,7 @@ import dao.AppointmentDao;
 import dao.DBConnector;
 import dao.Page;
 import dao.exception.SqlQueryExecutionException;
-import entities.Appointment;
+import entity.Appointment;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

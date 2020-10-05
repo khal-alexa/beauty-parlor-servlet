@@ -1,6 +1,6 @@
 package dao;
 
-import entities.Feedback;
+import entity.Feedback;
 
 import java.util.List;
 

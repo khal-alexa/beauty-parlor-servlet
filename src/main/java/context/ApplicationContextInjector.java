@@ -6,6 +6,10 @@ import command.RegisterCommand;
 import dao.DBConnector;
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
+import dto.UserDto;
+import entity.User;
+import mapper.Mapper;
+import mapper.UserMapper;
 import service.UserService;
 import service.impl.UserServiceImpl;
 import service.validator.UserValidator;
@@ -19,7 +23,8 @@ public class ApplicationContextInjector {
     private static final DBConnector DB_CONNECTOR = new DBConnector();
     private static final UserDao USER_DAO = new UserDaoImpl(DB_CONNECTOR);
     private static final UserValidator USER_VALIDATOR = new UserValidator();
-    private static final UserService USER_SERVICE = new UserServiceImpl(USER_DAO, USER_VALIDATOR);
+    private static final Mapper<User, UserDto> USER_MAPPER = new UserMapper();
+    private static final UserService USER_SERVICE = new UserServiceImpl(USER_DAO, USER_VALIDATOR, USER_MAPPER);
 
     static {
         COMMANDS.put("login", new LoginCommand(USER_SERVICE));

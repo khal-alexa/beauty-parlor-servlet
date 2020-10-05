@@ -3,7 +3,7 @@ package dao.impl;
 import dao.AbstractCrudDao;
 import dao.DBConnector;
 import dao.TreatmentDao;
-import entities.Treatment;
+import entity.Treatment;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

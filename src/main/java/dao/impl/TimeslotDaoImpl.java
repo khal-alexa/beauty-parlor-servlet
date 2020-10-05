@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.AbstractCrudDao;
 import dao.DBConnector;
-import entities.Timeslot;
+import entity.Timeslot;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
