@@ -15,12 +15,13 @@ import java.util.Optional;
 public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
+    private static final String FIND_BY_USERNAME_QUERY = "SELECT * FROM users WHERE username = ?";
     private static final String SAVE_QUERY =
             "INSERT INTO users (username, password, first_name, last_name, email, phone_number, role) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users LIMIT ? OFFSET ?";
     private static final String UPDATE_QUERY =
-            "UPDATE users SET user_name = ?, password = ?, email = ?, phone_number = ?, role = ? where id = ?";
+            "UPDATE users SET username = ?, password = ?, email = ?, phone_number = ?, role = ? where id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id = ?";
 
     public UserDaoImpl(DBConnector dbConnector) {
@@ -49,7 +50,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     protected User buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
         return new User.UserBuilder()
                 .setId(resultSet.getLong("id"))
-                .setUserName(resultSet.getString("user_name"))
+                .setUserName(resultSet.getString("username"))
                 .setPassword(resultSet.getString("password"))
                 .setEmail(resultSet.getString("email"))
                 .setPhoneNumber(resultSet.getString("phone_number"))
@@ -60,6 +61,11 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     @Override
     public Optional<User> findByEmail(String email) {
         return findByParam(email, FIND_BY_EMAIL_QUERY);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return findByParam(username, FIND_BY_USERNAME_QUERY);
     }
 
     @Override

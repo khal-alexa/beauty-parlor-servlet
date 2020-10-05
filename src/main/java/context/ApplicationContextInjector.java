@@ -22,7 +22,7 @@ public class ApplicationContextInjector {
     private static final UserService USER_SERVICE = new UserServiceImpl(USER_DAO, USER_VALIDATOR);
 
     static {
-        COMMANDS.put("login", new LoginCommand());
+        COMMANDS.put("login", new LoginCommand(USER_SERVICE));
         COMMANDS.put("register", new RegisterCommand(USER_SERVICE));
     }
 
