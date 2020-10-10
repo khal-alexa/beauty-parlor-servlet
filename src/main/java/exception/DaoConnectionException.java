@@ -1,4 +1,4 @@
-package dao.exception;
+package exception;
 
 public class DaoConnectionException extends RuntimeException {
     public DaoConnectionException(String message) {

@@ -4,7 +4,7 @@ import dao.AbstractCrudDao;
 import dao.DBConnector;
 import dao.FeedbackDao;
 import dao.Page;
-import dao.exception.SqlQueryExecutionException;
+import exception.SqlQueryExecutionException;
 import entity.Feedback;
 
 import java.sql.PreparedStatement;

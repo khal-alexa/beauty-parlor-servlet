@@ -1,7 +1,7 @@
 package controller;
 
 import command.Command;
-import command.CommandProvider;
+import command.util.CommandProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +34,8 @@ public class FrontController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        command.execute(request, response);
+        String page = command.execute(request, response);
+        request.getRequestDispatcher(page).forward(request, response);
 
     }
 

@@ -3,7 +3,7 @@ package dao.impl;
 import dao.AbstractCrudDao;
 import dao.DBConnector;
 import dao.UserDao;
-import dao.exception.SqlQueryExecutionException;
+import exception.SqlQueryExecutionException;
 import entity.Role;
 import entity.User;
 

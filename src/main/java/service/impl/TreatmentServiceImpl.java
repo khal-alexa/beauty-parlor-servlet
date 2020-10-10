@@ -1,5 +1,6 @@
 package service.impl;
 
+import dao.Page;
 import dao.TreatmentDao;
 import dao.UserDao;
 import dto.TreatmentDto;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class TreatmentServiceImpl implements TreatmentService {
     private final TreatmentDao treatmentDao;
     private final UserDao userDao;
+    private static final Integer TREATMENTS_PER_PAGE = 5;
 
     public TreatmentServiceImpl(TreatmentDao treatmentDao, UserDao userDao) {
         this.treatmentDao = treatmentDao;
@@ -26,14 +28,32 @@ public class TreatmentServiceImpl implements TreatmentService {
     }
 
     @Override
-    public List<TreatmentDto> findAllWithSpecialistsAndRates() {
+    public Page<TreatmentDto> findAllWithSpecialistsAndRates(String pageNumber) {
         Map<String, Double> rates = userDao.findAllSpecialistsWithRates();
-        List<TreatmentDto> dtos = treatmentDao.findAllWithSpecialists();
-        return dtos.stream()
+        int validPageNum = validatePageNumber(pageNumber);
+        List<TreatmentDto> allTreatments = treatmentDao.findAllWithSpecialists();
+        int totalItems = allTreatments.size();
+        int totalPages = totalItems/TREATMENTS_PER_PAGE + 1;
+
+        List<TreatmentDto> dtos = treatmentDao.
+                findAllWithSpecialistsPaged(TREATMENTS_PER_PAGE, validPageNum*TREATMENTS_PER_PAGE).stream()
                 .map(e -> new TreatmentDto.TreatmentDtoBuilder(e)
                         .setSpecialistName(e.getSpecialistName())
                         .setRate(rates.get(e.getSpecialistName()))
                         .build())
                 .collect(Collectors.toList());
+
+        return new Page<>(dtos, validPageNum, TREATMENTS_PER_PAGE, totalItems, totalPages);
     }
+
+    private int validatePageNumber(String page) {
+        int pageNumber = 0;
+        try {
+            pageNumber = Integer.parseInt(page) - 1;
+        } catch (NumberFormatException e) {
+            e.getCause();
+        }
+        return pageNumber;
+    }
+
 }

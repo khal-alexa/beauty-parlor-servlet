@@ -2,14 +2,14 @@ package dao;
 
 import java.util.List;
 
-public class Page {
-    private List<Object> items;
-    private int pageNumber;
-    private int itemsPerPage;
-    private Long totalItems;
-    private Long totalPages;
+public class Page<E> {
+    private final List<E> items;
+    private final int pageNumber;
+    private final int itemsPerPage;
+    private final int totalItems;
+    private final int totalPages;
 
-    public Page(List<Object> items, int pageNumber, int itemsPerPage, Long totalItems, Long totalPages) {
+    public Page(List<E> items, int pageNumber, int itemsPerPage, int totalItems, int totalPages) {
         this.items = items;
         this.pageNumber = pageNumber;
         this.itemsPerPage = itemsPerPage;
@@ -17,7 +17,7 @@ public class Page {
         this.totalPages = totalPages;
     }
 
-    public List<Object> getItems() {
+    public List<E> getItems() {
         return items;
     }
 
@@ -29,11 +29,12 @@ public class Page {
         return itemsPerPage;
     }
 
-    public Long getTotalItems() {
+    public int getTotalItems() {
         return totalItems;
     }
 
-    public Long getTotalPages() {
+    public int getTotalPages() {
         return totalPages;
     }
+
 }

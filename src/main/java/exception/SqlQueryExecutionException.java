@@ -1,4 +1,4 @@
-package dao.exception;
+package exception;
 
 public class SqlQueryExecutionException extends RuntimeException {
     public SqlQueryExecutionException(String message) {

@@ -11,4 +11,6 @@ public interface TreatmentDao extends CrudDao<Treatment> {
 
     List<TreatmentDto> findAllWithSpecialists();
 
+    List<TreatmentDto> findAllWithSpecialistsPaged(int limit, int offset);
+
 }

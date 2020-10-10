@@ -1,5 +1,6 @@
-package command;
+package command.util;
 
+import command.Command;
 import context.ApplicationContextInjector;
 
 import java.util.Map;
