@@ -1,10 +1,13 @@
 package service.impl;
 
+import dao.DBConnector;
 import dao.Page;
 import dao.TreatmentDao;
 import dao.UserDao;
 import dto.TreatmentDto;
 import entity.Treatment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.TreatmentService;
 
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TreatmentServiceImpl implements TreatmentService {
+    private static final Logger LOGGER = LogManager.getLogger(TreatmentServiceImpl.class);
+
     private final TreatmentDao treatmentDao;
     private final UserDao userDao;
     private static final Integer TREATMENTS_PER_PAGE = 5;
@@ -51,7 +56,8 @@ public class TreatmentServiceImpl implements TreatmentService {
         try {
             pageNumber = Integer.parseInt(page) - 1;
         } catch (NumberFormatException e) {
-            e.getCause();
+            String message = String.format("Could not parse page number from provided string: %s", page);
+            LOGGER.warn(message, e);
         }
         return pageNumber;
     }

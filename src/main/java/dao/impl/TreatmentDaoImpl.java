@@ -6,6 +6,8 @@ import dao.TreatmentDao;
 import exception.SqlQueryExecutionException;
 import dto.TreatmentDto;
 import entity.Treatment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class TreatmentDaoImpl extends AbstractCrudDao<Treatment> implements TreatmentDao {
+    private static final Logger LOGGER = LogManager.getLogger(TreatmentDaoImpl.class);
+
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM treatments WHERE id=?";
     private static final String FIND_BY_NAME_QUERY = "SELECT * FROM treatments WHERE name=?";
     private static final String FIND_ALL_QUERY = "select t.name, t.price, u.username from treatments t \n" +
@@ -76,6 +80,7 @@ public class TreatmentDaoImpl extends AbstractCrudDao<Treatment> implements Trea
         } catch (SQLException e) {
             String message =
                    "Fail to execute findAll treatments query";
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
@@ -98,7 +103,8 @@ public class TreatmentDaoImpl extends AbstractCrudDao<Treatment> implements Trea
             }
         } catch (SQLException e) {
             String message =
-                    "Fail to execute findAll treatments with specialists query";
+                    "Fail to execute findAllPaged treatments with specialists query";
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }

@@ -1,6 +1,8 @@
 package dao;
 
 import exception.SqlQueryExecutionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractCrudDao<E> implements CrudDao<E> {
+    private static final Logger LOGGER = LogManager.getLogger(AbstractCrudDao.class);
+
     private final String findByIdQuery;
     private final String saveQuery;
     private final String findAllQuery;
@@ -35,6 +39,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
             isSaved = true;
         } catch (SQLException e) {
             String message = String.format("Fail to execute query: %s", saveQuery);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
         return isSaved;
@@ -52,7 +57,8 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
             }
         } catch (
                 SQLException e) {
-            String message = String.format("Fail to execute find by param query with param: %s", param);
+            String message = String.format("Fail to execute find by param query %s with param: %s", findByIdQuery, param);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
@@ -72,7 +78,8 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
             }
         } catch (SQLException e) {
             String message =
-                    String.format("Fail to execute findAll query with params, LIMIT: %d; OFFSET: %d", limit, offset);
+                    String.format("Fail to execute findAll query %s with params, LIMIT: %d; OFFSET: %d", findAllQuery, limit, offset);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
@@ -87,6 +94,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
             }
         } catch (SQLException e) {
             String message = String.format("Fail to execute query: %s", updateQuery);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
@@ -97,6 +105,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
             preparedStatement.execute();
         } catch (SQLException e) {
             String message = String.format("Fail to execute delete by id query by id: %d", id);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
