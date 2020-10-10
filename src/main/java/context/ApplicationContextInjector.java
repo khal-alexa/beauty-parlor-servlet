@@ -1,6 +1,8 @@
 package context;
 
+import command.ClientProfileCommand;
 import command.Command;
+import command.FeedbackCommand;
 import command.HomeCommand;
 import command.LoginCommand;
 import command.RegisterCommand;
@@ -39,6 +41,8 @@ public class ApplicationContextInjector {
         COMMANDS.put("", new HomeCommand(TREATMENT_SERVICE));
         COMMANDS.put("login", new LoginCommand(USER_SERVICE));
         COMMANDS.put("register", new RegisterCommand(USER_SERVICE));
+        COMMANDS.put("client/profile", new ClientProfileCommand());
+        COMMANDS.put("client/feedback", new FeedbackCommand());
     }
 
     private ApplicationContextInjector() {
