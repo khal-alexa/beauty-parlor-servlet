@@ -8,6 +8,7 @@ import service.UserService;
 import service.encoder.PasswordEncoder;
 import service.validator.UserValidator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -33,12 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String username, String password) {
+    public Optional<User> login(String username, String password) {
         Optional<User> userFromDb = userDao.findByUsername(username);
         if (!userFromDb.isPresent() || !passwordEncoder.verify(password, userFromDb.get().getPassword())) {
-            return null;
+            return Optional.empty();
         }
-        return userFromDb.get();
+        return userFromDb;
     }
 
     private boolean isEmailNotUnique(String email) {
@@ -49,6 +50,13 @@ public class UserServiceImpl implements UserService {
         return new UserDto.UserDtoBuilder(userDto)
                 .setPassword(passwordEncoder.encode(userDto.getPassword()))
                 .build();
+    }
+
+    public boolean validatePasswords(String password, String confirmedPassword) {
+        if (password == null || confirmedPassword == null) {
+            return false;
+        }
+        return password.equals(confirmedPassword);
     }
 
 }

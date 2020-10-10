@@ -1,6 +1,6 @@
 package dao;
 
-import dao.exception.SqlQueryExecutionException;
+import exception.SqlQueryExecutionException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RegisterCommand extends AbstractCommand {
+import static constant.PageConstants.LOGIN_PAGE;
+import static constant.PageConstants.REGISTRATION_PAGE;
+
+public class RegisterCommand implements Command {
     private final UserService userService;
 
     public RegisterCommand(UserService userService) {
@@ -17,22 +20,22 @@ public class RegisterCommand extends AbstractCommand {
     }
 
     @Override
-    void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("register.jsp");
-    }
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean isValidPasswords = userService.validatePasswords(request.getParameter("password"),
+                request.getParameter("confirmedPassword"));
 
-    @Override
-    void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (!validatePasswords(request)) {
-            response.sendRedirect("register.jsp");
+        if (!isValidPasswords || request.getAttribute("username") == null) {
+            return REGISTRATION_PAGE;
         }
+
         UserDto user = buildUserFromRequest(request);
 
         if (userService.register(user)) {
-            response.sendRedirect("login.jsp");
+            return LOGIN_PAGE;
         } else {
-            response.sendRedirect("register.jsp");
+            return REGISTRATION_PAGE;
         }
+
     }
 
     private UserDto buildUserFromRequest(HttpServletRequest request) {
@@ -52,12 +55,6 @@ public class RegisterCommand extends AbstractCommand {
                 .setPhoneNumber(phoneNumber)
                 .setRole(Role.CLIENT)
                 .build();
-    }
-
-    private boolean validatePasswords(HttpServletRequest request) {
-        String password = request.getParameter("password");
-        String confirmedPassword = request.getParameter("confirmedPassword");
-        return password.equals(confirmedPassword);
     }
 
 }

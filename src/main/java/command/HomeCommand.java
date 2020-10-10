@@ -1,5 +1,7 @@
 package command;
 
+import constant.PageConstants;
+import dao.Page;
 import dto.TreatmentDto;
 import service.TreatmentService;
 
@@ -7,9 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-public class HomeCommand extends AbstractCommand {
+public class HomeCommand implements Command {
     private final TreatmentService treatmentService;
 
     public HomeCommand(TreatmentService treatmentService) {
@@ -17,14 +18,12 @@ public class HomeCommand extends AbstractCommand {
     }
 
     @Override
-    void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<TreatmentDto> treatments = treatmentService.findAllWithSpecialistsAndRates();
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String page = request.getParameter("page");
+        Page<TreatmentDto> treatments = treatmentService.findAllWithSpecialistsAndRates(page);
         request.setAttribute("treatments", treatments);
-        request.getRequestDispatcher("home.jsp").forward(request, response);
-    }
-
-    @Override
-    void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("page", treatments.getPageNumber());
+        return PageConstants.HOME_PAGE;
     }
 
 }

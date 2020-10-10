@@ -9,8 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Optional;
 
-public class LoginCommand extends AbstractCommand {
+import static constant.PageConstants.*;
+
+public class LoginCommand implements Command {
     private final UserService userService;
 
     public LoginCommand(UserService userService) {
@@ -18,30 +21,30 @@ public class LoginCommand extends AbstractCommand {
     }
 
     @Override
-    void processGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.sendRedirect("login.jsp");
-    }
-
-    @Override
-    void processPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        User user = getLoggedUserFromDb(username, password);
-
-        if (user == null) {
-            response.sendRedirect("login.jsp");
+        if (username == null) {
+            return LOGIN_PAGE;
         }
 
-        setUserAndRoleToSession(request, user);
-        Role role = user.getRole();
+        Optional<User> user = getLoggedUserFromDb(username, password);
+
+        if (!user.isPresent()) {
+            response.sendRedirect(LOGIN_PAGE);
+        }
+
+        User verifiedUser = user.get();
+        setUserAndRoleToSession(request, verifiedUser);
+        Role role = verifiedUser.getRole();
 
         if (role.equals(Role.ADMIN)) {
-            response.sendRedirect("admin/adminPanel.jsp");
+            return ADMIN_PANEL;
         }  else if (role.equals(Role.SPECIALIST)) {
-            response.sendRedirect("specialist/cabinet.jsp");
+            return SPECIALIST_CABINET;
         }  else {
-            response.sendRedirect("client/clientProfile.jsp");
+            return CLIENT_PROFILE;
         }
     }
 
@@ -52,7 +55,7 @@ public class LoginCommand extends AbstractCommand {
         session.setAttribute("role", user.getRole());
     }
 
-    private User getLoggedUserFromDb(String username, String password) {
+    private Optional<User> getLoggedUserFromDb(String username, String password) {
         return userService.login(username, password);
     }
 

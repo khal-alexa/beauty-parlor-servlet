@@ -4,7 +4,7 @@ import dao.AbstractCrudDao;
 import dao.AppointmentDao;
 import dao.DBConnector;
 import dao.Page;
-import dao.exception.SqlQueryExecutionException;
+import exception.SqlQueryExecutionException;
 import entity.Appointment;
 
 import java.sql.Date;

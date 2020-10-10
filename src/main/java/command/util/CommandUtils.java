@@ -1,4 +1,4 @@
-package command;
+package command.util;
 
 public class CommandUtils {
     public static String getCommandNameFromPath(String requestPath) {

@@ -1,7 +1,7 @@
 package dao;
 
 import com.zaxxer.hikari.HikariDataSource;
-import dao.exception.DaoConnectionException;
+import exception.DaoConnectionException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

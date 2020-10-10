@@ -1,5 +1,6 @@
 package service;
 
+import dao.Page;
 import dto.TreatmentDto;
 import entity.Treatment;
 
@@ -9,5 +10,5 @@ import java.util.Optional;
 public interface TreatmentService {
     Optional<Treatment> findByName(String treatmentName);
 
-    List<TreatmentDto> findAllWithSpecialistsAndRates();
+    Page<TreatmentDto> findAllWithSpecialistsAndRates(String pageNumber);
 }
