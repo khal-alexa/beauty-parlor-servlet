@@ -10,12 +10,17 @@ import entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
     private static final String FIND_BY_USERNAME_QUERY = "SELECT * FROM users WHERE username = ?";
+    private static final String FIND_ALL_SPECIALISTS_WITH_RATES = " select u.username, AVG(rate) from users u\n" +
+            "left join feedbacks f on f.specialist_id = u.id\n" +
+            " where role='SPECIALIST' group by u.username;";
     private static final String SAVE_QUERY =
             "INSERT INTO users (username, password, first_name, last_name, email, phone_number, role) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -76,6 +81,23 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
             return true;
         } catch (SQLException e) {
             String message = String.format("Fail to execute delete by id query by id: %d", userId);
+            throw new SqlQueryExecutionException(message, e);
+        }
+    }
+
+    @Override
+    public Map<String, Double> findAllSpecialistsWithRates() {
+        Map<String, Double> rates = new HashMap<>();
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(FIND_ALL_SPECIALISTS_WITH_RATES)) {
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    rates.put(resultSet.getString(1), resultSet.getDouble(2));
+                }
+                return rates;
+            }
+        } catch (SQLException e) {
+            String message =
+                    "Fail to execute findAll specialists with rates query";
             throw new SqlQueryExecutionException(message, e);
         }
     }
