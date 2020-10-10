@@ -65,6 +65,18 @@ public class UserDto {
         private String phoneNumber;
         private Role role;
 
+        public UserDtoBuilder(){}
+
+        public UserDtoBuilder(UserDto userDto) {
+            this.userName = userDto.getUsername();
+            this.firstName = userDto.getFirstName();
+            this.lastName = userDto.getLastName();
+            this.email = userDto.getEmail();
+            this.password = userDto.getPassword();
+            this.phoneNumber = userDto.getPhoneNumber();
+            this.role = userDto.getRole();
+        }
+
         public UserDtoBuilder setId(Long id) {
             this.id = id;
             return this;
