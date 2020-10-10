@@ -6,6 +6,8 @@ import dao.UserDao;
 import exception.SqlQueryExecutionException;
 import entity.Role;
 import entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
+    private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
+
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private static final String FIND_BY_EMAIL_QUERY = "SELECT * FROM users WHERE email = ?";
     private static final String FIND_BY_USERNAME_QUERY = "SELECT * FROM users WHERE username = ?";
@@ -80,7 +84,8 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
             preparedStatement.execute();
             return true;
         } catch (SQLException e) {
-            String message = String.format("Fail to execute delete by id query by id: %d", userId);
+            String message = String.format("Fail to execute delete user by id query by id: %d", userId);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
@@ -98,6 +103,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
         } catch (SQLException e) {
             String message =
                     "Fail to execute findAll specialists with rates query";
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }

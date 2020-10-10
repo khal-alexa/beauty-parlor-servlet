@@ -6,6 +6,8 @@ import dao.FeedbackDao;
 import dao.Page;
 import exception.SqlQueryExecutionException;
 import entity.Feedback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements FeedbackDao {
+    private static final Logger LOGGER = LogManager.getLogger(FeedbackDaoImpl.class);
+
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM feedbacks WHERE id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM feedbacks OFFSET ? LIMIT ?";
     private static final String FIND_ALL_BY_CLIENT_QUERY = "SELECT * FROM feedbacks WHERE client_id = ? LIMIT ? OFFSET ?";
@@ -81,7 +85,8 @@ public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements Feedba
             }
         } catch (SQLException e) {
             String message =
-                    String.format("Fail to execute findAll query with params, param: %s; LIMIT: %d; OFFSET: %d", param, limit, offset);
+                    String.format("Fail to execute findAll feedbacks query with params, param: %s; LIMIT: %d; OFFSET: %d", param, limit, offset);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }

@@ -6,6 +6,8 @@ import dao.DBConnector;
 import dao.Page;
 import exception.SqlQueryExecutionException;
 import entity.Appointment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements AppointmentDao {
+    private static final Logger LOGGER = LogManager.getLogger(AppointmentDaoImpl.class);
 
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM appointments WHERE id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM appointments LIMIT ? OFFSET ?";
@@ -92,7 +95,8 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
             }
         } catch (SQLException e) {
             String message =
-                    String.format("Fail to execute findAll query with params, param: %s; LIMIT: %d; OFFSET: %d", param, limit, offset);
+                    String.format("Fail to execute findAll appointments query with params, param: %s; LIMIT: %d; OFFSET: %d", param, limit, offset);
+            LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
     }
