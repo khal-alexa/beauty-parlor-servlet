@@ -1,8 +1,8 @@
 package service.impl;
 
 import dao.Page;
+import dao.TimeslotDao;
 import dao.TreatmentDao;
-import dao.impl.TimeslotDaoImpl;
 import dto.AppointmentDto;
 import entity.Timeslot;
 import exception.EntityNotFoundException;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TimeslotServiceImpl implements TimeslotService {
-    private final TimeslotDaoImpl timeslotDao;
+    private final TimeslotDao timeslotDao;
     private final TreatmentDao treatmentDao;
 
-    public TimeslotServiceImpl(TimeslotDaoImpl timeslotDao, TreatmentDao treatmentDao) {
+    public TimeslotServiceImpl(TimeslotDao timeslotDao, TreatmentDao treatmentDao) {
         this.timeslotDao = timeslotDao;
         this.treatmentDao = treatmentDao;
     }

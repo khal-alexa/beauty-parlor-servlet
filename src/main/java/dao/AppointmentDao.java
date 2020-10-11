@@ -2,13 +2,12 @@ package dao;
 
 import entity.Appointment;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AppointmentDao extends CrudDao<Appointment> {
-    List<Appointment> findAllByClientId(Long clientId, Page page);
+    List<Appointment> findAllByDate(LocalDate date, Page page);
 
-    List<Appointment> findAllBySpecialistId(Long specialistId, Page page);
-
-    List<Appointment> findAllByServiceId(Long serviceId, Page page);
+    List<Appointment> findAllByDateAndTreatmentId(LocalDate date, Long treatmentId);
 
 }
