@@ -1,6 +1,7 @@
 package entity;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Treatment {
     private Long id;
@@ -8,11 +9,11 @@ public class Treatment {
     private String description;
     private BigDecimal price;
 
-    public Treatment(Long id, String name, String description, BigDecimal price) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
+    private Treatment(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.description = builder.description;
+        this.price = builder.price;
     }
 
     public Long getId() {
@@ -31,34 +32,38 @@ public class Treatment {
         return price;
     }
 
-    public static class ServiceBuilder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
         private Long id;
         private String name;
         private String description;
         private BigDecimal price;
 
-        public ServiceBuilder setId(Long id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public ServiceBuilder setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public ServiceBuilder setDescription(String description) {
+        public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public ServiceBuilder setPrice(BigDecimal price) {
+        public Builder setPrice(BigDecimal price) {
             this.price = price;
             return this;
         }
 
         public Treatment build() {
-            return new Treatment(id, name, description, price);
+            return new Treatment(this);
         }
     }
 
@@ -70,6 +75,26 @@ public class Treatment {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Treatment treatment = (Treatment) o;
+        return Objects.equals(id, treatment.id) &&
+                Objects.equals(name, treatment.name) &&
+                Objects.equals(description, treatment.description) &&
+                Objects.equals(price, treatment.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, price);
     }
 
 }

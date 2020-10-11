@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Appointment {
     private final Long id;
@@ -12,16 +13,15 @@ public class Appointment {
     private boolean isPaid;
     private boolean isDone;
 
-    public Appointment(Long id, Long timeslotId, LocalDate date, Long clientId,
-                       Long specialistId, Long treatmentId, boolean isPaid, boolean isDone) {
-        this.id = id;
-        this.timeslotId = timeslotId;
-        this.date = date;
-        this.clientId = clientId;
-        this.specialistId = specialistId;
-        this.treatmentId = treatmentId;
-        this.isPaid = isPaid;
-        this.isDone = isDone;
+    private Appointment(Builder builder) {
+        this.id = builder.id;
+        this.timeslotId = builder.timeslotId;
+        this.date = builder.date;
+        this.clientId = builder.clientId;
+        this.specialistId = builder.specialistId;
+        this.treatmentId = builder.treatmentId;
+        this.isPaid = builder.isPaid;
+        this.isDone = builder.isDone;
     }
 
     public Long getId() {
@@ -68,7 +68,11 @@ public class Appointment {
         this.timeslotId = timeslotId;
     }
 
-    public static class AppointmentBuilder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
         private Long id;
         private Long timeslotId;
         private LocalDate date;
@@ -78,49 +82,48 @@ public class Appointment {
         private boolean isPaid;
         private boolean isDone;
 
-        public AppointmentBuilder setId(Long id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public AppointmentBuilder setTimeslotId(Long timeslotId) {
+        public Builder setTimeslotId(Long timeslotId) {
             this.timeslotId = timeslotId;
             return this;
         }
 
-        public AppointmentBuilder setDate(LocalDate date) {
+        public Builder setDate(LocalDate date) {
             this.date = date;
             return this;
         }
 
-        public AppointmentBuilder setClientId(Long clientId) {
+        public Builder setClientId(Long clientId) {
             this.clientId = clientId;
             return this;
         }
 
-        public AppointmentBuilder setSpecialistId(Long specialistId) {
+        public Builder setSpecialistId(Long specialistId) {
             this.specialistId = specialistId;
             return this;
         }
 
-        public AppointmentBuilder setTreatmentId(Long serviceId) {
+        public Builder setTreatmentId(Long serviceId) {
             this.treatmentId = serviceId;
             return this;
         }
 
-        public AppointmentBuilder setPaid(boolean paid) {
+        public Builder setPaid(boolean paid) {
             isPaid = paid;
             return this;
         }
 
-        public AppointmentBuilder setDone(boolean done) {
+        public Builder setDone(boolean done) {
             isDone = done;
             return this;
         }
 
         public Appointment build() {
-            return new Appointment(id, timeslotId, date, clientId, specialistId,
-                    treatmentId, isPaid, isDone);
+            return new Appointment(this);
         }
     }
 
@@ -136,6 +139,30 @@ public class Appointment {
                 ", isPaid=" + isPaid +
                 ", isDone=" + isDone +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Appointment that = (Appointment) o;
+        return isPaid == that.isPaid &&
+                isDone == that.isDone &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(timeslotId, that.timeslotId) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(clientId, that.clientId) &&
+                Objects.equals(specialistId, that.specialistId) &&
+                Objects.equals(treatmentId, that.treatmentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, timeslotId, date, clientId, specialistId, treatmentId, isPaid, isDone);
     }
 
 }

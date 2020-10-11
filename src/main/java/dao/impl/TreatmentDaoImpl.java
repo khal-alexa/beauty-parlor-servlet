@@ -50,7 +50,7 @@ public class TreatmentDaoImpl extends AbstractCrudDao<Treatment> implements Trea
 
     @Override
     protected Treatment buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Treatment.ServiceBuilder()
+        return new Treatment.Builder()
                 .setId(resultSet.getLong("id"))
                 .setName(resultSet.getString("name"))
                 .setDescription(resultSet.getString("description"))

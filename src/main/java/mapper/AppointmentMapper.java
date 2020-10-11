@@ -43,7 +43,7 @@ public class AppointmentMapper implements Mapper<Appointment, AppointmentDto> {
 
     @Override
     public Appointment mapDtoIntoEntity(AppointmentDto dto) {
-        return new Appointment.AppointmentBuilder()
+        return new Appointment.Builder()
                 .setId(dto.getId())
                 .setTimeslotId(timeslotRepository.findByStartTime(LocalTime.parse(dto.getTimeslot())).getId())
                 .setDate(dto.getDate())

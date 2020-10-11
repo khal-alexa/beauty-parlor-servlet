@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS beauty CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+-- CREATE DATABASE IF NOT EXISTS beauty CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-USE beauty;
+-- USE beauty;
 
 DROP TABLE IF EXISTS appointments;
 DROP TABLE IF EXISTS specialists_treatments;

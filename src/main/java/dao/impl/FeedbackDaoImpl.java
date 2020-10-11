@@ -24,8 +24,8 @@ public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements Feedba
     private static final String FIND_ALL_BY_CLIENT_QUERY = "SELECT * FROM feedbacks WHERE client_id = ? LIMIT ? OFFSET ?";
     private static final String FIND_ALL_BY_SPECIALIST_QUERY = "SELECT * FROM feedbacks WHERE specialist_id = ? OFFSET ? LIMIT ?";
 
-    private static final String SAVE_QUERY = "INSERT INTO feedbacks (rate, text, client_id, specialist_id, date_time) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE feedbacks SET rate=?, text = ?, client_id = ?, specialist_id = ?, dateTime = ? WHERE id = ?";
+    private static final String SAVE_QUERY = "INSERT INTO feedbacks (rate, text, client_id, specialist_id, created_on) VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE feedbacks SET rate=?, text = ?, client_id = ?, specialist_id = ?, created_on = ? WHERE id = ?";
     private static final String DELETE_QUERY = "DELETE FROM feedbacks WHERE id = ?";
 
     public FeedbackDaoImpl(DBConnector dbConnector) {
@@ -49,13 +49,13 @@ public class FeedbackDaoImpl extends AbstractCrudDao<Feedback> implements Feedba
 
     @Override
     protected Feedback buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Feedback.FeedbackBuilder()
+        return new Feedback.Builder()
                 .setId(resultSet.getLong("id"))
                 .setText(resultSet.getString("text"))
                 .setRate(resultSet.getInt("rate"))
                 .setClientId(resultSet.getLong("client_id"))
                 .setSpecialistId(resultSet.getLong("specialist_id"))
-                .setDateTime(resultSet.getTimestamp("date_time").toLocalDateTime())
+                .setDateTime(resultSet.getTimestamp("created_on").toLocalDateTime())
                 .build();
     }
 

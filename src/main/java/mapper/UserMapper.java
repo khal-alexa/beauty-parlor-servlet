@@ -10,7 +10,7 @@ public class UserMapper implements Mapper<User, UserDto> {
             return null;
         }
 
-        return new User.UserBuilder()
+        return new User.Builder()
                 .setId(dto.getId())
                 .setUserName(dto.getUsername())
                 .setFirstName(dto.getFirstName())

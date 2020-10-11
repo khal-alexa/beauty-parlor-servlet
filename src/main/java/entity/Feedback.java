@@ -1,22 +1,23 @@
 package entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Feedback {
-    private Long id;
-    private int rate;
-    private String text;
-    private Long clientId;
-    private Long specialistId;
-    private LocalDateTime dateTime;
+    private final Long id;
+    private final int rate;
+    private final String text;
+    private final Long clientId;
+    private final Long specialistId;
+    private final LocalDateTime dateTime;
 
-    public Feedback(Long id, int rate, String text, Long clientId, Long specialistId, LocalDateTime dateTime) {
-        this.id = id;
-        this.rate = rate;
-        this.text = text;
-        this.clientId = clientId;
-        this.specialistId = specialistId;
-        this.dateTime = dateTime;
+    private Feedback(Builder builder) {
+        this.id = builder.id;
+        this.rate = builder.rate;
+        this.text = builder.text;
+        this.clientId = builder.clientId;
+        this.specialistId = builder.specialistId;
+        this.dateTime = builder.dateTime;
     }
 
     public Long getId() {
@@ -43,7 +44,11 @@ public class Feedback {
         return dateTime;
     }
 
-    public static class FeedbackBuilder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
         private Long id;
         private int rate;
         private String text;
@@ -51,38 +56,38 @@ public class Feedback {
         private Long specialistId;
         private LocalDateTime dateTime;
 
-        public FeedbackBuilder setId(Long id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public FeedbackBuilder setRate(int rate) {
+        public Builder setRate(int rate) {
             this.rate = rate;
             return this;
         }
 
-        public FeedbackBuilder setText(String text) {
+        public Builder setText(String text) {
             this.text = text;
             return this;
         }
 
-        public FeedbackBuilder setClientId(Long clientId) {
+        public Builder setClientId(Long clientId) {
             this.clientId = clientId;
             return this;
         }
 
-        public FeedbackBuilder setSpecialistId(Long specialistId) {
+        public Builder setSpecialistId(Long specialistId) {
             this.specialistId = specialistId;
             return this;
         }
 
-        public FeedbackBuilder setDateTime(LocalDateTime dateTime) {
+        public Builder setDateTime(LocalDateTime dateTime) {
             this.dateTime = dateTime;
             return this;
         }
 
         public Feedback build() {
-            return new Feedback(id, rate, text, clientId, specialistId, dateTime);
+            return new Feedback(this);
         }
     }
 
@@ -96,6 +101,28 @@ public class Feedback {
                 ", specialistId=" + specialistId +
                 ", dateTime=" + dateTime +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Feedback feedback = (Feedback) o;
+        return rate == feedback.rate &&
+                Objects.equals(id, feedback.id) &&
+                Objects.equals(text, feedback.text) &&
+                Objects.equals(clientId, feedback.clientId) &&
+                Objects.equals(specialistId, feedback.specialistId) &&
+                Objects.equals(dateTime, feedback.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, rate, text, clientId, specialistId, dateTime);
     }
 
 }
