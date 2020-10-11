@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface CrudDao<E> {
     boolean save(E entity);
 
-    Optional<E> findById(Integer id);
+    Optional<E> findById(Long id);
 
     List<E> findAll(Page page);
 

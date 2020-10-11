@@ -45,7 +45,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
         return isSaved;
     }
 
-    public Optional<E> findById(Integer id) {
+    public Optional<E> findById(Long id) {
         return findByParam(id, findByIdQuery);
     }
 
