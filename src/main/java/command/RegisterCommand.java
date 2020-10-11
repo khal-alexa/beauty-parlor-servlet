@@ -4,10 +4,8 @@ import dto.UserDto;
 import entity.Role;
 import service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import static constant.PageConstants.LOGIN_PAGE;
 import static constant.PageConstants.REGISTRATION_PAGE;
@@ -20,7 +18,7 @@ public class RegisterCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         boolean isValidPasswords = userService.validatePasswords(request.getParameter("password"),
                 request.getParameter("confirmedPassword"));
 

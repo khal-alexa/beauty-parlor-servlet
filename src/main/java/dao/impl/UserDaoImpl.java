@@ -57,7 +57,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
 
     @Override
     protected User buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return new User.UserBuilder()
+        return new User.Builder()
                 .setId(resultSet.getLong("id"))
                 .setUserName(resultSet.getString("username"))
                 .setPassword(resultSet.getString("password"))

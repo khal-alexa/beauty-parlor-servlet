@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.Objects;
+
 public class User {
     private final Long id;
     private final String username;
@@ -10,16 +12,15 @@ public class User {
     private final String phoneNumber;
     private final Role role;
 
-    public User(Long id, String username, String password, String firstName, String lastName,
-                String email, String phoneNumber, Role role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
+    private User(Builder builder) {
+        this.id = builder.id;
+        this.username = builder.userName;
+        this.password = builder.password;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phoneNumber = builder.phoneNumber;
+        this.role = builder.role;
     }
 
     public Long getId() {
@@ -54,7 +55,11 @@ public class User {
         return lastName;
     }
 
-    public static class UserBuilder {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
         private Long id;
         private String userName;
         private String password;
@@ -64,48 +69,48 @@ public class User {
         private String phoneNumber;
         private Role role;
 
-        public UserBuilder setId(Long id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public UserBuilder setUserName(String userName) {
+        public Builder setUserName(String userName) {
             this.userName = userName;
             return this;
         }
 
-        public UserBuilder setPassword(String password) {
+        public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public UserBuilder setEmail(String email) {
+        public Builder setEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public UserBuilder setPhoneNumber(String phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
 
-        public UserBuilder setRole(Role role) {
+        public Builder setRole(Role role) {
             this.role = role;
             return this;
         }
 
-        public UserBuilder setFirstName(String firstName) {
+        public Builder setFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public UserBuilder setLastName(String lastName) {
+        public Builder setLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
         public User build() {
-            return new User(id, userName, password, firstName, lastName, email, phoneNumber, role);
+            return new User(this);
         }
 
     }
@@ -122,6 +127,30 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", role=" + role +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(phoneNumber, user.phoneNumber) &&
+                role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, firstName, lastName, email, phoneNumber, role);
     }
 
 }

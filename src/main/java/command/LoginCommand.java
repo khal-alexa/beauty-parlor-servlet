@@ -2,18 +2,25 @@ package command;
 
 import entity.Role;
 import entity.User;
+import exception.CommandException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-import static constant.PageConstants.*;
+import static constant.PageConstants.ADMIN_PANEL;
+import static constant.PageConstants.CLIENT_PROFILE;
+import static constant.PageConstants.LOGIN_PAGE;
+import static constant.PageConstants.SPECIALIST_CABINET;
 
 public class LoginCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger(LoginCommand.class);
+
     private final UserService userService;
 
     public LoginCommand(UserService userService) {
@@ -21,7 +28,7 @@ public class LoginCommand implements Command {
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -32,7 +39,15 @@ public class LoginCommand implements Command {
         Optional<User> user = getLoggedUserFromDb(username, password);
 
         if (!user.isPresent()) {
-            response.sendRedirect(LOGIN_PAGE);
+            try {
+                String message = String.format("User %s tried to perform login but was not found in DB", username);
+                LOGGER.warn(message);
+                response.sendRedirect(LOGIN_PAGE);
+            } catch (IOException e) {
+                String message = "Cannot perform redirect to " + LOGIN_PAGE;
+                LOGGER.warn(message);
+                throw new CommandException(message, e);
+            }
         }
 
         User verifiedUser = user.get();
@@ -41,11 +56,11 @@ public class LoginCommand implements Command {
 
         if (role.equals(Role.ADMIN)) {
             return ADMIN_PANEL;
-        }  else if (role.equals(Role.SPECIALIST)) {
+        } else if (role.equals(Role.SPECIALIST)) {
             return SPECIALIST_CABINET;
-        }  else {
-            return CLIENT_PROFILE;
         }
+
+        return CLIENT_PROFILE;
     }
 
     private void setUserAndRoleToSession(HttpServletRequest request, User user) {

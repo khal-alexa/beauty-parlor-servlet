@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Timeslot {
     private Long id;
@@ -20,6 +21,24 @@ public class Timeslot {
 
     public LocalTime getStartTime() {
         return startTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Timeslot timeslot = (Timeslot) o;
+        return Objects.equals(id, timeslot.id) &&
+                Objects.equals(startTime, timeslot.startTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startTime);
     }
 
 }

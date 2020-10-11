@@ -1,6 +1,7 @@
 package dto;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class TreatmentDto {
     private final String treatmentName;
@@ -8,7 +9,7 @@ public class TreatmentDto {
     private final String specialistName;
     private final Double rate;
 
-    public TreatmentDto(TreatmentDtoBuilder builder) {
+    private TreatmentDto(TreatmentDtoBuilder builder) {
         treatmentName = builder.treatmentName;
         price = builder.price;
         specialistName = builder.specialistName;
@@ -70,6 +71,36 @@ public class TreatmentDto {
             return new TreatmentDto(this);
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TreatmentDto that = (TreatmentDto) o;
+        return Objects.equals(treatmentName, that.treatmentName) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(specialistName, that.specialistName) &&
+                Objects.equals(rate, that.rate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(treatmentName, price, specialistName, rate);
+    }
+
+    @Override
+    public String toString() {
+        return "TreatmentDto{" +
+                "treatmentName='" + treatmentName + '\'' +
+                ", price=" + price +
+                ", specialistName='" + specialistName + '\'' +
+                ", rate=" + rate +
+                '}';
     }
 
 }

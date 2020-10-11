@@ -34,7 +34,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             LOGGER.warn(message);
             throw new EntityNotFoundException(message);
         }
-        return feedbackDao.save(new Feedback.FeedbackBuilder()
+        return feedbackDao.save(new Feedback.Builder()
                 .setRate(feedbackDto.getRate())
                 .setClientId(feedbackDto.getClientId())
                 .setSpecialistId(specialist.get().getId())

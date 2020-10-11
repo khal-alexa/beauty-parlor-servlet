@@ -2,6 +2,8 @@ package dto;
 
 import entity.Role;
 
+import java.util.Objects;
+
 public class UserDto {
     private final Long id;
     private final String username;
@@ -12,7 +14,7 @@ public class UserDto {
     private final String phoneNumber;
     private final Role role;
 
-    private UserDto (UserDtoBuilder builder) {
+    private UserDto(UserDtoBuilder builder) {
         id = builder.id;
         username = builder.userName;
         firstName = builder.firstName;
@@ -65,7 +67,8 @@ public class UserDto {
         private String phoneNumber;
         private Role role;
 
-        public UserDtoBuilder(){}
+        public UserDtoBuilder() {
+        }
 
         public UserDtoBuilder(UserDto userDto) {
             this.userName = userDto.getUsername();
@@ -122,5 +125,43 @@ public class UserDto {
         }
 
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) &&
+                Objects.equals(username, userDto.username) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(firstName, userDto.firstName) &&
+                Objects.equals(lastName, userDto.lastName) &&
+                Objects.equals(email, userDto.email) &&
+                Objects.equals(phoneNumber, userDto.phoneNumber) &&
+                role == userDto.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, firstName, lastName, email, phoneNumber, role);
+    }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
 }

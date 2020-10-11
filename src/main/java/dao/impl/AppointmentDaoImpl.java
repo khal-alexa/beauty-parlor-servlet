@@ -38,7 +38,7 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
 
     @Override
     protected Appointment buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
-        return new Appointment.AppointmentBuilder()
+        return new Appointment.Builder()
                 .setId(resultSet.getLong("id"))
                 .setTimeslotId(resultSet.getLong("user_name"))
                 .setDate(resultSet.getDate("date").toLocalDate())

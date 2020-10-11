@@ -1,4 +1,4 @@
-use beauty;
+-- use beauty;
 
 -- USERS data
 INSERT INTO users (username, first_name, last_name, password, email, phone_number, role)
