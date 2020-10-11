@@ -13,6 +13,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
     private static final String FIND_ALL_BY_CLIENT = "SELECT * FROM appointments WHERE client_id = ? LIMIT ? OFFSET ?";
     private static final String FIND_ALL_BY_SPECIALIST = "SELECT * FROM appointments WHERE specialist_id = ? LIMIT ? OFFSET ?";
     private static final String FIND_ALL_BY_SERVICE = "SELECT * FROM appointments WHERE service_id = ? LIMIT ? OFFSET ?";
+    private static final String FIND_ALL_BY_DATE = "SELECT * FROM appointments WHERE date=?";
+    private static final String FIND_ALL_BY_DATE_AND_TREATMENT = "select * from appointments a where date=? and treatment_id=?";
 
     private static final String SAVE_QUERY = "INSERT INTO appointments (timeslot_id, date, client_id, specialist_id, service_id, is_paid, is_done) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_QUERY = "UPDATE appointments SET timeslot_id = ?, date = ?, client_id = ?, specialist_id, service_id = ?, is_paid = ?, is_done = ? WHERE id = ?";
@@ -45,21 +48,6 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
                 .setPaid(resultSet.getBoolean("is_paid"))
                 .setDone(resultSet.getBoolean("is_done"))
                 .build();
-    }
-
-    @Override
-    public List<Appointment> findAllByClientId(Long clientId, Page page) {
-        return findAllByParam(clientId, page, FIND_ALL_BY_CLIENT);
-    }
-
-    @Override
-    public List<Appointment> findAllBySpecialistId(Long specialistId, Page page) {
-        return findAllByParam(specialistId, page, FIND_ALL_BY_SPECIALIST);
-    }
-
-    @Override
-    public List<Appointment> findAllByServiceId(Long serviceId, Page page) {
-        return findAllByParam(serviceId, page, FIND_ALL_BY_SERVICE);
     }
 
     @Override
@@ -96,6 +84,32 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
         } catch (SQLException e) {
             String message =
                     String.format("Fail to execute findAll appointments query with params, param: %s; LIMIT: %d; OFFSET: %d", param, limit, offset);
+            LOGGER.warn(message, e);
+            throw new SqlQueryExecutionException(message, e);
+        }
+    }
+
+    @Override
+    public List<Appointment> findAllByDate(LocalDate date, Page page) {
+        return findAllByParam(date, page, FIND_ALL_BY_DATE);
+    }
+
+    @Override
+    public List<Appointment> findAllByDateAndTreatmentId(LocalDate date, Long treatmentId) {
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().
+                prepareStatement(FIND_ALL_BY_DATE_AND_TREATMENT)) {
+            preparedStatement.setObject(1, date);
+            preparedStatement.setLong(2, treatmentId);
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Appointment> entities = new ArrayList<>();
+                while (resultSet.next()) {
+                    entities.add(buildEntityFromResultSet(resultSet));
+                }
+                return entities;
+            }
+        } catch (SQLException e) {
+            String message =
+                    String.format("Fail to execute findAll appointments query with params: %s, %s", date, treatmentId);
             LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }

@@ -99,7 +99,7 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
         }
     }
 
-    public void deleteById(Integer id) {
+    public void deleteById(Long id) {
         try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(deleteByIdQuery)) {
             preparedStatement.setObject(1, id);
             preparedStatement.execute();

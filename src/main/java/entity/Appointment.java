@@ -4,13 +4,13 @@ import java.time.LocalDate;
 
 public class Appointment {
     private final Long id;
-    private final Long timeslotId;
+    private Long timeslotId;
     private final LocalDate date;
     private final Long clientId;
     private final Long specialistId;
     private final Long treatmentId;
-    private final boolean isPaid;
-    private final boolean isDone;
+    private boolean isPaid;
+    private boolean isDone;
 
     public Appointment(Long id, Long timeslotId, LocalDate date, Long clientId,
                        Long specialistId, Long treatmentId, boolean isPaid, boolean isDone) {
@@ -54,6 +54,18 @@ public class Appointment {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    public void setDone(boolean done) {
+        this.isDone = done;
+    }
+
+    public void setPaid(boolean paid) {
+        this.isDone = paid;
+    }
+
+    public void setTimeslotId(Long timeslotId) {
+        this.timeslotId = timeslotId;
     }
 
     public static class AppointmentBuilder {
@@ -125,4 +137,5 @@ public class Appointment {
                 ", isDone=" + isDone +
                 '}';
     }
+
 }
