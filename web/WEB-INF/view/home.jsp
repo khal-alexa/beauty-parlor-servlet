@@ -25,15 +25,15 @@
 </form>
 <hr>
 <form action="/" method="get">
-<h1>Table for Guest</h1>
+<h1><fmt:message key="message.guest"/></h1>
 <div class="container">
 
 <table style="width:50%" border="2">
 <tr>
-    <th>Service</th>
-    <th>Specialist</th>
-    <th>Rating</th>
-    <th>Price</th>
+    <th><fmt:message key="table.column.treatment"/></th>
+    <th><fmt:message key="table.column.specialist"/></th>
+    <th><fmt:message key="table.column.rating"/></th>
+    <th><fmt:message key="table.column.price"/></th>
 </tr>
 <c:forEach var="treatment" items="${treatments.getItems()}">
     <tr>
@@ -75,7 +75,7 @@
         </ul>
     </nav>
     </form>
-    <h5>If you want to make an appointment, please login or register</h5>
+    <h5><fmt:message key="guest.message"/></h5>
 </div>
 </form>
 </body>

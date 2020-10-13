@@ -17,19 +17,14 @@
         <input type="text" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{3,19}$"
                placeholder="<fmt:message key="message.username"/>" name="username" required>
         <br>
-        Username can contain only english letters or numbers or symbols: "_", "-", "." (min - 4, max - 20),
-        should start from letter
+        <fmt:message key="username.constraints"/>
         <br>
 
         <label ><b><fmt:message key="user.password"/> </b></label>
         <input type="password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
                placeholder="<fmt:message key="message.password"/>" name="password" required>
         <br>
-        Password requirements:
-        - Minimum 8 characters
-        - At least one uppercase character
-        - At least one lowercase character
-        - At least one digit
+        <fmt:message key="password.constraints"/>
         <br>
 
         <label ><b><fmt:message key="confirm.password"/></b></label>

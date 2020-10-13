@@ -2,16 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ctags" tagdir="/WEB-INF/tags" %>
-<fmt:setLocale value="${param.lang}"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
 
-<html lang="${param.lang}">
+<html lang="${sessionScope.lang}">
 <head>
     <title>Title</title>
 </head>
 <body>
-<h1>Page for authorized Client</h1>
-<h2>You could choose a treatment to make appointment:</h2>
+<h1><fmt:message key="message.client"/></h1>
+<h2><fmt:message key="message.client.appointment"/></h2>
 <br>
 <form action="/client/booking/manicure" method="get">
     <a href="@{/client/booking/{treatmentName}(treatmentName=manicure)}"><fmt:message key="button.manicure"/></a>
@@ -22,7 +22,7 @@
 <form action="/client/booking/massage" method="get">
     <a href="@{/client/booking/{treatmentName}(treatmentName=massage)}"><fmt:message key="button.massage"/></a>
 </form>
-<h2>Or you can leave a feedback:</h2>
+<h2><fmt:message key="message.client.feedback"/></h2>
 <form action="/client/feedback" method="post">
     <a href="/client/feedback"><fmt:message key="button.feedback"/></a>
 </form>

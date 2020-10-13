@@ -4,12 +4,11 @@
 <%@ taglib prefix="ctags" tagdir="/WEB-INF/tags" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages"/>
-
 <html lang="${sessionScope.lang}">
 <head>
-    <title>Title</title>
+    <title>Access denied</title>
 </head>
 <body>
-<h1><fmt:message key="admin.panel"/></h1>
+<h1><fmt:message key="error.page.message"/>/h1>
 </body>
 </html>

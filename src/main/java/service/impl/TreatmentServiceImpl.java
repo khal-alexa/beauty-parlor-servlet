@@ -1,6 +1,5 @@
 package service.impl;
 
-import dao.DBConnector;
 import dao.Page;
 import dao.TreatmentDao;
 import dao.UserDao;
@@ -53,6 +52,9 @@ public class TreatmentServiceImpl implements TreatmentService {
 
     private int validatePageNumber(String page) {
         int pageNumber = 0;
+        if (page == null) {
+            return pageNumber;
+        }
         try {
             pageNumber = Integer.parseInt(page) - 1;
         } catch (NumberFormatException e) {
