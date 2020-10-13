@@ -29,7 +29,7 @@ public class SecurityFilter implements Filter {
         final Role role = (Role) request.getSession().getAttribute("role");
 
         if (!isUrlPublic(path) && role!= null && !isPermittedRequest(role, path)) {
-            response.sendRedirect("/WEB-INF/view/access_denied.jsp");
+            response.sendRedirect("/WEB-INF/view/error.jsp");
             return;
         }
         filterChain.doFilter(request, servletResponse);
