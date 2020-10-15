@@ -29,14 +29,15 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Command command = commandProvider.getCommand(request.getRequestURI());
-
         if (command == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
         String page = command.execute(request, response);
         if (page.contains("redirect:")) {
-            response.sendRedirect(request.getContextPath() +page.replaceAll("redirect:",""));
+            response.sendRedirect(request.getContextPath() + page.replace("redirect:", "")
+                    .replace("/WEB-INF/view", "")
+                    .replace(".jsp", ""));
             return;
         }
         request.getRequestDispatcher(page).forward(request, response);

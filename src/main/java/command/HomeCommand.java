@@ -1,6 +1,5 @@
 package command;
 
-import constant.PageConstants;
 import dao.Page;
 import dto.TreatmentDto;
 import service.TreatmentService;

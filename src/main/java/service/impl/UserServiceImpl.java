@@ -2,14 +2,16 @@ package service.impl;
 
 import dao.UserDao;
 import dto.UserDto;
+import entity.Role;
 import entity.User;
 import mapper.Mapper;
 import service.UserService;
 import service.encoder.PasswordEncoder;
 import service.validator.UserValidator;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -57,6 +59,14 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         return password.equals(confirmedPassword);
+    }
+
+    @Override
+    public List<String> findAllByRole(Role role) {
+        List<User> users = userDao.findAllByRole(role);
+        return users.stream()
+                .map(User::getUsername)
+                .collect(Collectors.toList());
     }
 
 }

@@ -12,7 +12,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,6 +31,7 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
             "INSERT INTO users (username, password, first_name, last_name, email, phone_number, role) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String FIND_ALL_QUERY = "SELECT * FROM users LIMIT ? OFFSET ?";
+    private static final String FIND_ALL_BY_ROLE_QUERY = "SELECT * FROM users WHERE role = ?";
     private static final String UPDATE_QUERY =
             "UPDATE users SET username = ?, password = ?, email = ?, phone_number = ?, role = ? where id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id = ?";
@@ -106,6 +109,26 @@ public class UserDaoImpl extends AbstractCrudDao<User> implements UserDao {
             LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }
+    }
+
+    @Override
+    public List<User> findAllByRole(Role role) {
+        List<User> users = new ArrayList<>();
+        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(FIND_ALL_BY_ROLE_QUERY)) {
+            preparedStatement.setObject(1, role.name());
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    users.add(buildEntityFromResultSet(resultSet));
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            String message =
+                    "Fail to execute findAll by role query";
+            LOGGER.warn(message, e);
+            throw new SqlQueryExecutionException(message, e);
+        }
+
     }
 
 }

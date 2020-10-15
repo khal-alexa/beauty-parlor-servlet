@@ -17,7 +17,7 @@ public class SecurityFilter implements Filter {
     private static final String ADMIN_URL = "/WEB-INF/view/admin/";
     private static final String SPECIALIST_URL = "/WEB-INF/view/specialist/";
     private static final String CLIENT_URL = "/client/";
-    private static final List<String> PUBLIC_PAGES = Arrays.asList("/", "/login", "/logout", "/register", "/access_denied");
+    private static final List<String> PUBLIC_PAGES = Arrays.asList("/", "/auth", "/login", "/logout", "/register", "/access_denied");
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

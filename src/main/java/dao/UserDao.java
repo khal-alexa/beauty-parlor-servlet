@@ -1,7 +1,9 @@
 package dao;
 
+import entity.Role;
 import entity.User;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,4 +15,6 @@ public interface UserDao extends CrudDao<User> {
     boolean deleteUserById(Long userId);
 
     Map<String, Double> findAllSpecialistsWithRates();
+
+    List<User> findAllByRole(Role role);
 }
