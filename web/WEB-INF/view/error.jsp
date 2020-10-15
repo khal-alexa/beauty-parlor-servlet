@@ -6,9 +6,9 @@
 <fmt:setBundle basename="messages"/>
 <html lang="${sessionScope.lang}">
 <head>
-    <title>Access denied</title>
+    <title>Error</title>
 </head>
 <body>
-<h1><fmt:message key="error.page.message"/>/h1>
+<h1><fmt:message key="error.page.message"/></h1>
 </body>
 </html>

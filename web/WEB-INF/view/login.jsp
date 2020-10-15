@@ -11,7 +11,7 @@
 </head>
 <body>
 <h2><fmt:message key="login.form"/></h2>
-<form action="/login" method="post">
+<form action="auth" method="post">
     <div class="container">
         <label><b><fmt:message key="user.login" /></b></label>
         <input type="text" placeholder="<fmt:message key="message.username" />" name="username" required>
@@ -20,7 +20,7 @@
         <label><b><fmt:message key="user.password" /></b></label>
         <input type="password" placeholder="<fmt:message key="message.password" />" name="password" required>
         <br>
-        <button type="submit"><fmt:message key="button.login" /></button>
+        <button type="submit"><fmt:message key="button.auth" /></button>
     </div>
 </form>
 </body>

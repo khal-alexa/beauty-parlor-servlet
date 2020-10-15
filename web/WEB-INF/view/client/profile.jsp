@@ -23,7 +23,7 @@
     <a href="@{/client/booking/{treatmentName}(treatmentName=massage)}"><fmt:message key="button.massage"/></a>
 </form>
 <h2><fmt:message key="message.client.feedback"/></h2>
-<form action="/client/feedback" method="post">
+<form action="${pageContext.request.contextPath}/client/feedback" method="get">
     <a href="/client/feedback"><fmt:message key="button.feedback"/></a>
 </form>
 <br>
