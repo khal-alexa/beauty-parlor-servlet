@@ -2,8 +2,8 @@ package service.impl;
 
 import dao.AppointmentDao;
 import dao.Page;
+import dao.TimeslotDao;
 import dao.TreatmentDao;
-import dao.impl.TimeslotDaoImpl;
 import dto.AppointmentDto;
 import entity.Appointment;
 import entity.Timeslot;
@@ -22,11 +22,11 @@ import java.util.stream.Collectors;
 
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentDao appointmentDao;
-    private final TimeslotDaoImpl timeslotDao;
+    private final TimeslotDao timeslotDao;
     private final TreatmentDao treatmentDao;
     private final AppointmentMapper appointmentMapper;
 
-    public AppointmentServiceImpl(AppointmentDao appointmentDao, TimeslotDaoImpl timeslotDao,
+    public AppointmentServiceImpl(AppointmentDao appointmentDao, TimeslotDao timeslotDao,
                                   TreatmentDao treatmentDao, AppointmentMapper appointmentMapper) {
         this.appointmentDao = appointmentDao;
         this.timeslotDao = timeslotDao;
@@ -63,18 +63,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date, Page page) {
-        return appointmentDao.findAllByDate(date, page).stream()
-                .filter(appointment -> appointment.getSpecialistId().equals(id))
+    public List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date) {
+        return appointmentDao.findAllByDateAndSpecialist(date, id).stream()
                 .map(appointmentMapper::mapEntityIntoDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void markAppointmentAsDone(Long id) {
-        Optional<Appointment> appointment = appointmentDao.findById(id);
-        appointment.orElseThrow(EntityNotFoundException::new).setDone(true);
-        appointmentDao.save(appointment.orElseThrow(EntityNotFoundException::new));
+        appointmentDao.updateDone(id);
     }
 
     @Override
@@ -111,7 +108,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private List<Appointment> findAllSorted(LocalDate date, Optional<Long> treatmentId, Page page) {
         List<Appointment> appointments;
-        if(!treatmentId.isPresent()) {
+        if (!treatmentId.isPresent()) {
             appointments = appointmentDao.findAllByDate(date, page);
         } else {
             appointments = appointmentDao.findAllByDateAndTreatmentId(date, treatmentId.get());

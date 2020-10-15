@@ -4,6 +4,7 @@ import exception.SqlQueryExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +51,8 @@ public abstract class AbstractCrudDao<E> implements CrudDao<E> {
     }
 
     public <P> Optional<E> findByParam(P param, String findByParam) {
-        try (final PreparedStatement preparedStatement = dbConnector.getConnection().prepareStatement(findByParam)) {
+        try (final Connection connection = dbConnector.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(findByParam)) {
             preparedStatement.setObject(1, param);
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 return resultSet.next() ? Optional.ofNullable(buildEntityFromResultSet(resultSet)) : Optional.empty();
