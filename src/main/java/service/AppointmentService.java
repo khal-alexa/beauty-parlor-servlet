@@ -12,7 +12,7 @@ public interface AppointmentService {
 
     List<AppointmentDto> findAllByDateWithTimeslots(LocalDate date, Optional<Long> treatmentId, Page page);
 
-    List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date, Page page);
+    List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date);
 
     void markAppointmentAsDone(Long id);
 

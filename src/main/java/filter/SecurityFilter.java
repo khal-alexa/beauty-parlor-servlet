@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SecurityFilter implements Filter {
-    private static final String ADMIN_URL = "/WEB-INF/view/admin/";
-    private static final String SPECIALIST_URL = "/WEB-INF/view/specialist/";
+    private static final String ADMIN_URL = "/admin/";
+    private static final String SPECIALIST_URL = "/specialist/";
     private static final String CLIENT_URL = "/client/";
     private static final List<String> PUBLIC_PAGES = Arrays.asList("/", "/auth", "/login", "/logout", "/register", "/access_denied");
 

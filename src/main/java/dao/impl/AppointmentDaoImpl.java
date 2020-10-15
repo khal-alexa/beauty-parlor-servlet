@@ -9,6 +9,7 @@ import entity.Appointment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,14 +23,13 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
 
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM appointments WHERE id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM appointments LIMIT ? OFFSET ?";
-    private static final String FIND_ALL_BY_CLIENT = "SELECT * FROM appointments WHERE client_id = ? LIMIT ? OFFSET ?";
-    private static final String FIND_ALL_BY_SPECIALIST = "SELECT * FROM appointments WHERE specialist_id = ? LIMIT ? OFFSET ?";
-    private static final String FIND_ALL_BY_SERVICE = "SELECT * FROM appointments WHERE service_id = ? LIMIT ? OFFSET ?";
-    private static final String FIND_ALL_BY_DATE = "SELECT * FROM appointments WHERE date=?";
+    private static final String FIND_ALL_BY_DATE = "SELECT * FROM appointments WHERE date=? LIMIT ? OFFSET ?";
     private static final String FIND_ALL_BY_DATE_AND_TREATMENT = "select * from appointments a where date=? and treatment_id=?";
+    private static final String FIND_ALL_BY_DATE_AND_SPECIALIST = "select * from appointments a where date=? and specialist_id = ?";
 
-    private static final String SAVE_QUERY = "INSERT INTO appointments (timeslot_id, date, client_id, specialist_id, service_id, is_paid, is_done) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_QUERY = "UPDATE appointments SET timeslot_id = ?, date = ?, client_id = ?, specialist_id, service_id = ?, is_paid = ?, is_done = ? WHERE id = ?";
+    private static final String SAVE_QUERY = "INSERT INTO appointments (timeslot_id, date, client_id, specialist_id, treatment_id, is_paid, is_done) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_QUERY = "UPDATE appointments SET timeslot_id = ?, date = ?, client_id = ?, specialist_id, treatment_id = ?, is_paid = ?, is_done = ? WHERE id = ?";
+    private static final String UPDATE_DONE = "UPDATE appointments SET is_done = ? WHERE id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM appointments WHERE id = ?";
 
     public AppointmentDaoImpl(DBConnector dbConnector) {
@@ -40,11 +40,11 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
     protected Appointment buildEntityFromResultSet(ResultSet resultSet) throws SQLException {
         return new Appointment.Builder()
                 .setId(resultSet.getLong("id"))
-                .setTimeslotId(resultSet.getLong("user_name"))
+                .setTimeslotId(resultSet.getLong("timeslot_id"))
                 .setDate(resultSet.getDate("date").toLocalDate())
                 .setClientId(resultSet.getLong("client_id"))
                 .setSpecialistId(resultSet.getLong("specialist_id"))
-                .setTreatmentId(resultSet.getLong("service_id"))
+                .setTreatmentId(resultSet.getLong("treatment_id"))
                 .setPaid(resultSet.getBoolean("is_paid"))
                 .setDone(resultSet.getBoolean("is_done"))
                 .build();
@@ -95,21 +95,56 @@ public class AppointmentDaoImpl extends AbstractCrudDao<Appointment> implements 
     }
 
     @Override
+    public List<Appointment> findAllByDateAndSpecialist(LocalDate date, Long specialistId) {
+        try (final Connection connection = dbConnector.getConnection();
+                final PreparedStatement preparedStatement = connection.
+                prepareStatement(FIND_ALL_BY_DATE_AND_SPECIALIST)) {
+            return findByTwoParams(date, specialistId, preparedStatement);
+        } catch (SQLException e) {
+            String message =
+                    String.format("Fail to execute findAll appointments by date and specialist query with params: %s, %s", date, specialistId);
+            LOGGER.warn(message, e);
+            throw new SqlQueryExecutionException(message, e);
+        }
+    }
+
+    @Override
     public List<Appointment> findAllByDateAndTreatmentId(LocalDate date, Long treatmentId) {
-        try (final PreparedStatement preparedStatement = dbConnector.getConnection().
+        try (Connection connection = dbConnector.getConnection();
+                final PreparedStatement preparedStatement = connection.
                 prepareStatement(FIND_ALL_BY_DATE_AND_TREATMENT)) {
-            preparedStatement.setObject(1, date);
-            preparedStatement.setLong(2, treatmentId);
-            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
-                List<Appointment> entities = new ArrayList<>();
-                while (resultSet.next()) {
-                    entities.add(buildEntityFromResultSet(resultSet));
-                }
-                return entities;
-            }
+            return findByTwoParams(date, treatmentId, preparedStatement);
         } catch (SQLException e) {
             String message =
                     String.format("Fail to execute findAll appointments query with params: %s, %s", date, treatmentId);
+            LOGGER.warn(message, e);
+            throw new SqlQueryExecutionException(message, e);
+        }
+    }
+
+    private List<Appointment> findByTwoParams(LocalDate param1, Long param2, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setObject(1, param1);
+        preparedStatement.setLong(2, param2);
+        try (final ResultSet resultSet = preparedStatement.executeQuery()) {
+            List<Appointment> entities = new ArrayList<>();
+            while (resultSet.next()) {
+                entities.add(buildEntityFromResultSet(resultSet));
+            }
+            return entities;
+        }
+    }
+
+    @Override
+    public boolean updateDone(Long id) {
+        try (final Connection connection = dbConnector.getConnection();
+                final PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_DONE)) {
+            preparedStatement.setBoolean(1, true);
+            preparedStatement.setLong(2, id);
+                preparedStatement.executeUpdate();
+                return true;
+        } catch (SQLException e) {
+            String message =
+                    String.format("Fail to execute update appointment, set done=true, query with id: %s: ", id);
             LOGGER.warn(message, e);
             throw new SqlQueryExecutionException(message, e);
         }

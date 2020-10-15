@@ -20,6 +20,7 @@ import static constant.PageConstants.SPECIALIST_CABINET;
 
 public class AuthCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger(AuthCommand.class);
+    private static final String REDIRECT = "redirect:";
 
     private final UserService userService;
 
@@ -55,12 +56,12 @@ public class AuthCommand implements Command {
         Role role = verifiedUser.getRole();
 
         if (role.equals(Role.ADMIN)) {
-            return ADMIN_PANEL;
+            return REDIRECT + ADMIN_PANEL;
         } else if (role.equals(Role.SPECIALIST)) {
-            return SPECIALIST_CABINET;
+            return REDIRECT + SPECIALIST_CABINET;
         }
 
-        return "redirect:" + CLIENT_PROFILE;
+        return REDIRECT + CLIENT_PROFILE;
     }
 
     private void setUserAndRoleToSession(HttpServletRequest request, User user) {
